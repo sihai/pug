@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop   
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd   
+        http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+        http://www.springframework.org/schema/context   
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd   
+        http://www.springframework.org/schema/mvc   
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd   
+        http://www.springframework.org/schema/tx   
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<mvc:annotation-driven />
+	<context:component-scan base-package="pug" />
+	
+	<!-- Interceptors that execute common control logic across multiple requests -->
+	<mvc:interceptors>
+	
+		<!-- Detects the client's Device -->
+		<bean class="org.springframework.mobile.device.DeviceResolverHandlerInterceptor" />
+		
+		<!-- Redirects the client to their preferred site if necessary.
+		     This particular configuration redirects clients preferring the mobile site to 'm.testdomain'.
+		     NOTE: for this redirect to work testdomain.com and m.testdomain.com must be added to your hosts file when running the app -->
+		<!--
+		<bean class="org.springframework.mobile.device.switcher.SiteSwitcherHandlerInterceptor" factory-method="mDot">
+			<beans:constructor-arg value="testdomain.com" />
+		</bean>
+		-->
+	</mvc:interceptors>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.velocity.VelocityView</value>
+		</property>
+		<property name="suffix">
+			<value>.vm</value>
+		</property>
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes">
+	        <value>true</value>
+	    </property>
+	</bean>
+	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath" value="/WEB-INF/templates" />
+		<property name="velocityProperties">
+			<map>
+				<entry key="input.encoding" value="utf-8" />
+				<entry key="output.encoding" value="utf-8" />
+				<entry key="runtime.log.logsystem.class" value="org.apache.velocity.runtime.log.Log4JLogChute" />
+				<entry key="runtime.log.logsystem.log4j.logger" value="com.taobao.top.console.velocityLog" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+    	<!-- 设置上传文件的最大尺寸为1GB -->  
+    	<property name="maxUploadSize">  
+        	<value>1073741824</value>  
+    	</property>  
+	</bean>  
+
+	<bean id="simpleUrlHandlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/login.jhtml">login</prop>
+				<prop key="/register.jhtml">register</prop>
+				<prop key="/qqcallback.jhtml">qqCallback</prop>
+				<prop key="/myfoot.jhtml">myFoot</prop>
+				<prop key="/pugaction.jhtml">pugAction</prop>
+				<prop key="/pugquery.jhtml">pugQuery</prop>
+				<prop key="/memberaction.jhtml">memberAction</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+	
+	<bean id="login" class="com.iacrqq.pug.web.controller.Login">
+	</bean>
+	
+	<bean id="register" class="com.iacrqq.pug.web.controller.Register">
+	</bean>
+	
+	<bean id="qqCallback" class="com.iacrqq.pug.web.controller.QQCallback">
+		<property name="userManager" ref="userManager" />
+	</bean>
+	
+	<bean id="myFoot" class="com.iacrqq.pug.web.controller.MyFoot">
+	</bean>
+	
+	<bean id="pugQuery" class="com.iacrqq.pug.web.controller.PugQuery">
+		<property name="pugManager" ref="pugManager" />
+	</bean>
+	
+	<bean id="pugAction" class="com.iacrqq.pug.web.action.PugAction">
+		<property name="pugManager" ref="pugManager" />
+	</bean>
+	
+	<bean id="memberAction" class="com.iacrqq.pug.web.action.MemberAction">
+		<property name="userManager" ref="userManager" />
+	</bean>
+</beans>  

@@ -1,0 +1,473 @@
+#set($JQUERY='$.')
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<meta charset="utf-8">
+    	<title>旧旧的足迹</title>
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<meta name="description" content="">
+    	<meta name="author" content="Qiangqiang RAO,sihai">
+    	<!-- Le styles -->
+    	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	    <style type="text/css">
+			body {
+		    	padding-top: 60px;
+		        padding-bottom: 40px;
+		    }
+	      	.sidebar-nav {
+	       	 	padding: 9px 0;
+	      	}
+	      	.member-box {
+	       	 	display: block;
+				padding: 10px;
+	      	}
+	      	.round-all {
+				-webkit-border-radius: 3px;
+				-moz-border-radius: 3px;
+				border-radius: 3px;
+			}
+			.os, .softs, .langs {
+				display: inline-block;
+				width: auto;
+				font-size: 16px;
+				color: 
+				white;
+				opacity: 0.6;
+				cursor: pointer;
+				margin: 10px 8px 0px 0px;
+				padding: 5px 12px 6px 12px;
+				-webkit-transition: opacity .2s ease-in-out;
+				-moz-transition: opacity .2s ease-in-out;
+				-ms-transition: opacity .2s ease-in-out;
+				-o-transition: opacity .2s ease-in-out;
+				transition: opacity .2s ease-in-out;
+				box-shadow: 0px 0px 7px 1px 
+				rgba(0, 0, 0, 0.2);
+				border-radius: 2px;
+			}
+			.os {
+				background-color: 
+				rgba(210, 18, 66, 1);
+			}
+			.langs {
+				background-color: 
+				rgba(0, 175, 219, 1);
+			}
+			.softs {
+				background-color: 
+				rgba(0, 194, 78, 1);
+			}
+			
+			.widget_container {
+			    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
+			}
+			.widget_container {
+			    margin-bottom: 20px;
+			    padding: 7px;
+			}
+			.widget_container .well {
+    			background: url("../examples/19.png") repeat scroll 0 0 #FDFDFD;
+			}
+			.well.nomargin {
+    			border: 0 none;
+    			padding: 0;
+			}
+			.widget_container .well {
+			    border-radius: 0 0 0 0;
+			    margin-bottom: 0;
+			}
+			.well.nomargin .navbar.navbar-static.navbar_as_heading, .well.nomargin .navbar.navbar-static.navbar_as_heading .navbar-inner {
+			    border-color: transparent;
+			    margin: 0;
+			}
+			.well.nomargin .navbar.navbar-static.navbar_as_heading, .well.nomargin .navbar.navbar-static.navbar_as_heading .navbar-inner {
+			    border-color: transparent;
+			    margin: 0;
+			}
+			.navbar.navbar-static.navbar_as_heading .navbar-inner {
+			    border-radius: 0 0 0 0;
+			    margin: -20px -20px 20px;
+			}
+			.navbar.navbar-static.navbar_as_heading .navbar-inner .brand {
+			    color: #EFEFEF;
+			    font-size: 14px;
+			    font-weight: bold;
+			    margin-top: 5px;
+			    text-transform: uppercase;
+			}
+			.subnav {
+			    background-color: #DEDEDE;
+			    height: 40px;
+			    margin: 0;
+			    padding: 5px 10px 6px;
+			}
+			.badge {
+			    padding: 3px 7px;
+			    z-index: 50;
+			}
+			.abs1 {
+			    position: absolute;
+			    right: -10px;
+			    top: -13px;
+			    z-index: 260;
+			}
+			.subnav .search-query {
+			    background-color: #FFFFFF !important;
+			    border: 1px solid #CCCCCC !important;
+			}
+			.btn-duadua {
+			    color: #FFFFFF !important;
+			    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+			}
+			.btn-duadua {
+			    background-color: #272431 !important;
+			    background-image: -moz-linear-gradient(center top , #54506C, #272431);
+			    background-repeat: repeat-x;
+			    border-color: #272431 #272431 #1B1A23;
+			    color: #FFFFFF !important;
+			    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+			}
+			[class^="icon-"], [class*=" icon-"] {
+			    background-image: none;
+			    background-position: 0 0;
+			    background-repeat: repeat;
+			    display: inline;
+			    height: auto;
+			    line-height: inherit;
+			    vertical-align: baseline;
+			    width: auto;
+			}
+			.icon-trash-2:before {
+			    content: "";
+			}
+			[class^="icon-"]:before, [class*=" icon-"]:before {
+			    display: inline-block;
+			    font-family: combine_fonts;
+			    font-style: normal;
+			    font-weight: normal;
+			    text-decoration: inherit;
+			}
+			.btn [class^="icon-"], .btn [class*=" icon-"] {
+			    line-height: 0.9em;
+			}
+			.subnav.nobg {
+			    background-color: rgba(0, 0, 0, 0.3);
+			    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+			    border-top: 1px solid rgba(0, 0, 0, 0.4);
+			    height: 30px;
+			}
+			.subnav.nobg .pagination {
+			    float: right;
+			    margin: 1px 0;
+			}
+			.well.nomargin table {
+			    border-color: transparent;
+			    margin: 0;
+			}
+			.table thead {
+			    background: -moz-linear-gradient(center top , #EEEEEE 0%, #CCCCCC 100%) repeat scroll 0 0 transparent;
+			}
+			.table.smallfont th, .table.smallfont td, p.smallfont, ul.smallfont {
+			    font-size: 11px;
+			}
+			.table th, .table td {
+			    border-top: 1px solid #BBBBBB;
+			}
+			.table th, .table td {
+			    border-color: transparent;
+			}
+			.post_title {
+    			font-size: 12px;
+    			font-weight: bold;
+			}
+			.operation {
+    			height: 30px;
+			}
+			
+			.input-xxlarge-fluid {
+			    font-size: 18px;
+			    height: 30px;
+			    line-height: 30px;
+			    width: 98%;
+			}
+			.table-bordered {
+			    -moz-border-bottom-colors: none;
+			    -moz-border-image: none;
+			    -moz-border-left-colors: none;
+			    -moz-border-right-colors: none;
+			    -moz-border-top-colors: none;
+			    border-color: #BABABA #BABABA #BABABA -moz-use-text-color;
+			    border-style: solid solid solid none;
+			    border-width: 1px 1px 1px 0;
+			}
+			.wm {
+			    margin-bottom: 20px;
+			}
+			.myTabContent {
+			    background: none repeat scroll 0 0 #E9E9E9;
+			    border-radius: 0 0 4px 4px;
+			    margin: 0;
+			}
+			.myTabContent .tab-pane .inner {
+			    margin: 20px;
+			}
+			.nav.nav-tabs.myTab {
+			    margin-bottom: 0;
+			}
+			.table.smallfont th, .table.smallfont td, p.smallfont, ul.smallfont {
+			    font-size: 11px;
+			}
+			.nav.nav-tabs.myTab.smallfont li a {
+			    padding: 4px 8px;
+			}
+			.nav.nav-tabs.myTab li.active a, .nav.nav-tabs.myTab li.active a:hover {
+			    background: none repeat scroll 0 0 #E9E9E9;
+			    border: 1px solid transparent;
+			}
+			.nav.nav-tabs.myTab li.active a, .nav.nav-tabs.myTab li.active a:hover {
+			    color: #454545;
+			    text-shadow: none;
+			}
+			.custom-acc .accordion-heading, .nav.nav-tabs.myTab li a {
+			    background: -moz-linear-gradient(center top , #575757 0%, #3D3D3D 100%) repeat scroll 0 0 transparent;
+			}
+			.nav.nav-tabs.myTab li a {
+			    border: 1px solid transparent;
+			    color: #DEDEDE;
+			    padding: 8px 16px;
+			    text-shadow: 1px 1px 1px rgba(24, 39, 62, 0.3);
+			}
+			.myTabContent .tab-pane .inner {
+			    margin: 20px;
+			}
+			.modal {
+				position: absolute;
+			}
+	    </style>
+    	<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    	<!--[if lt IE 9]>
+      	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    	<![endif]-->
+
+    	<!-- Le fav and touch icons -->
+    	<link rel="shortcut icon" href="assets/ico/favicon.ico">
+    	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/apple-touch-icon-144-precomposed.png">
+    	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/apple-touch-icon-114-precomposed.png">
+    	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/apple-touch-icon-72-precomposed.png">
+    	<link rel="apple-touch-icon-precomposed" href="/assets/ico/apple-touch-icon-57-precomposed.png">
+ 	</head>
+ 	
+	<body onload="initialize()" onunload="GUnload">
+    	<div class="container-fluid">
+      		<div class="row-fluid">
+        			<div class="hero-unit" style="text-align:right;">
+		          		<button id="join" class="btn btn-primary btn-large" style="width:300px;" onclick="addPug()">添加足迹</button>
+					</div>
+        			<div id="myEarth" style="width:100%;height:800px;">
+       	 			</div><!--/span-->
+      		</div><!--/row-->
+    	</div><!--/.fluid-container-->
+    	
+    	<div class="modal hide fade" id="pugLayer" style="width:730px;">
+  			<div class="widget_container">
+				<div class="well">
+					<div class="navbar navbar-static navbar_as_heading">
+						<div class="navbar-inner">
+							<div style="width: auto;" class="container">
+								<a class="brand"><i class="icon-th-large-1"></i>添加足迹</a>
+							</div>
+						</div>
+					</div>
+					<ul class="nav nav-tabs myTab smallfont">
+						<li class="active"><a data-toggle="tab" href="#newPug">新线路</a></li>
+						<li><a data-toggle="tab" href="#newPoint" onclick="fillPug()">添加点</a></li>
+					</ul>
+					
+					<div class="tab-content myTabContent wm">
+						<div id="newPug" class="tab-pane fade in active">
+							<div class="inner">
+								<div class="alert">
+									创建一条新的足迹
+								</div>
+								<form id="pugForm" name="pugForm" action="/pugaction.jhtml" method="post">
+									<input type="text" placeholder="新线路名称" class="input-xxlarge-fluid" name="name">
+									<textarea  id="description" name="description" placeholder="线路描述" style="width:100%;height:300px;"></textarea>
+									<div class="btn-toolbar" style="float:right;margin-bottom:10px;">
+										<div class="btn-group">
+									    	<button type="submit" class="btn btn-primary" style="width:128px;">提交</button>
+									    	<button class="btn btn-danger" data-dismiss="modal" style="width:128px;">取消</button>
+									  	</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						
+						<div id="newPoint" class="tab-pane fade">
+							<div class="inner">
+								<div class="alert">
+									延续指定的一条足迹
+								</div>
+								<form id="pointForm" name="pointForm" action="/pugaction.jhtml" method="post">
+									<select id="pug" name="pug" class="input-xxlarge-fluid">
+										<option value="-1">请选择线路</option>
+									</select>
+									<input type="text" placeholder="名称" class="input-xxlarge-fluid" name="name">
+									<input type="text" placeholder="经度" class="input-xxlarge-fluid" name="longitude">
+									<input type="text" placeholder="纬度" class="input-xxlarge-fluid" name="latitude">
+									<textarea  id="point_description" name="point_description" placeholder="点描述" style="width:100%;height:300px;"></textarea>
+									<div class="btn-toolbar" style="float:right;margin-bottom:10px;">
+										<div class="btn-group">
+									    	<button type="submit" class="btn btn-primary" style="width:128px;">提交</button>
+									    	<button class="btn btn-danger" data-dismiss="modal" style="width:128px;">取消</button>
+									  	</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div>
+  	</body>
+ 	
+ 	#parse("js.vm")
+    <script src="http://www.google.com/jsapi"></script>
+    <script language="javascript">
+  		var map;
+  		google.load('maps', '2');
+  		
+  		function initialize() {
+	      	map = new GMap2(document.getElementById("myEarth"));
+	      	map.setCenter(new GLatLng(30.265052181274214, 120.16507682289127), 12);
+	
+	      	// The following line makes the map Earth-enabled by adding the
+	      	// "Earth" button to the map type control.  Note that you still
+	      	// need to add a map type control (GMapTypeControl,
+	      	// GMenuMapTypeControl, or GHierarchicalMapTypeControl) to the
+	      	// the map (as is done below) for the "Earth" button and the rest
+	      	// of the map type buttons to show up at all.
+	      	map.addMapType(G_SATELLITE_3D_MAP);
+	
+	      	map.addControl(new GHierarchicalMapTypeControl());
+	      	map.addControl(new GLargeMapControl());
+	      
+	      	//var pointArray = new Array(3);
+	      	//pointArray[0] = new GLatLng(30.265052181274214, 120.16507682289127);
+	      	//pointArray[1] = new GLatLng(29.527162708337027, 106.56120237792972);
+	      	//pointArray[2] = new GLatLng(27.952556940030846, 109.6202081152344);
+	      	//addFootPoint(pointArray[0], '<div style="width: 210px; padding-right: 10px">Start-杭州</div>');
+	      	//addFootPoint(pointArray[1], '<div style="width: 210px; padding-right: 10px">重庆</div>');
+	      	//addFootPoint(pointArray[2], '<div style="width: 210px; padding-right: 10px">湖南凤凰</div>');
+	      	//drawLine(pointArray, "2011-05-01湖南凤凰走一次");
+	      	
+	    	drawFoot();
+    	}
+    	
+    	function addFootPoint(point, html) {
+    		// create a marker
+  			var marker = new GMarker(point);
+  			GEvent.addListener(marker, "click", function() {
+    			marker.openInfoWindowHtml(html);
+  			});
+  			map.addOverlay(marker);
+    	}
+    	
+    	function drawLine(pointArray, html) {
+    		var polyline = new GPolyline(pointArray, "#ff0000", 4);
+      		GEvent.addListener(polyline, "click", function(latlng) {
+        		map.openInfoWindowHtml(latlng, html);
+      		});
+      	
+      		map.addOverlay(polyline);
+      		
+      		//alert(pointArray.length);
+    	}
+    	
+    	function draw(pug) {
+    		${JQUERY}getJSON("/pugquery.jhtml?_operation_=_query_point_&pug=" + pug.id, '', function(response) {
+				if(response.isSucceed) {
+					var pointArray = new Array(response.result.length);
+					for(var i = 0; i < response.result.length; i++) {
+						pointArray[i] = new GLatLng(response.result[i].latitude, response.result[i].longitude);
+						addFootPoint(pointArray[i], '<div style="width: 210px; padding-right: 10px">' + response.result[i].description + '</div>');
+					}
+					drawLine(pointArray, pug.description);
+				} else {
+					alert("获取足迹数据失败：" + response.errorMsg);
+				}
+			})
+    	}
+    	
+    	function fillPug() {
+    		${JQUERY}getJSON("/pugquery.jhtml?_operation_=_query_pug_", '', function(response) {
+				if(response.isSucceed) {
+					$('#pug').empty();
+					for(var i = 0; i < response.result.itemList.length; i++) {
+						$('#pug').append('<option value=' + response.result.itemList[i].id + ' selected="selected">' + response.result.itemList[i].name + '</option>');
+						draw(response.result.itemList[i]);
+					}
+				} else {
+					alert("获取足迹数据失败：" + response.errorMsg);
+				}
+			})
+    	}
+    	
+    	function addPug() {
+			$("#pugForm")[0].reset();
+			$('#pugLayer').modal({
+	 				keyboard: true
+			});
+		}
+		
+		function drawFoot() {
+			${JQUERY}getJSON("/pugquery.jhtml?_operation_=_query_pug_", '', function(response) {
+				if(response.isSucceed) {
+					for(var i = 0; i < response.result.itemList.length; i++) {
+						draw(response.result.itemList[i]);
+					}
+				} else {
+					alert("获取足迹数据失败：" + response.errorMsg);
+				}
+			});
+		}
+    	
+    	$(document).ready(function() {
+			$('#pugForm').submit(function() {
+                    var options = { 
+                    	url:'/pugaction.jhtml?_operation_=_create_pug_',
+                    	type:'POST',
+                    	dataType:'json',
+                    	success: function(response){
+                    		if(response.isSucceed) {
+                    			$('#pugLayer').modal('hide');
+                    		} else  {
+                    			alert(response.errorMsg);
+                    		}
+                    	}
+                    }; 
+                    $('#pugForm').ajaxSubmit(options); 
+                    return false;
+        	});
+        	
+        	$('#pointForm').submit(function() {
+                var options = { 
+                	url:'/pugaction.jhtml?_operation_=_add_point_',
+                	type:'POST',
+                	dataType:'json',
+                	success: function(response){
+                		if(response.isSucceed) {
+                			$('#pugLayer').modal('hide');
+                		} else  {
+                			alert(response.errorMsg);
+                		}
+                	}
+                }; 
+                $('#pointForm').ajaxSubmit(options);
+                drawFoot();
+                return false;
+        	});  
+		});
+  	</script>
+</html>
