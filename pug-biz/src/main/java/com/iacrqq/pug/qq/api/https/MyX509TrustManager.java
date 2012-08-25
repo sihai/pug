@@ -1,0 +1,47 @@
+package com.iacrqq.pug.qq.api.https;
+
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.X509TrustManager;
+
+/**
+ * Java SDK for  OpenAPI V3   - 自定义签名证书管理类 (接受任意来源证书)
+ *
+ * @version 3.0.0
+ * @since jdk1.5
+ * @author mail: zdl1016@gmail.com qq:33384782
+ * @ History:
+ *               3.0.0 | Zhang Dongliang | 2012-03-21 09:43:11 | initialization
+ */
+
+public class MyX509TrustManager implements X509TrustManager 
+{
+
+	/* (non-Javadoc)
+	 * @see javax.net.ssl.X509TrustManager#checkClientTrusted(java.security.cert.X509Certificate[], java.lang.String)
+	 */
+	public void checkClientTrusted(X509Certificate[] arg0, String arg1)
+		throws CertificateException 
+    {
+
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.net.ssl.X509TrustManager#checkServerTrusted(java.security.cert.X509Certificate[], java.lang.String)
+	 */
+	public void checkServerTrusted(X509Certificate[] arg0, String arg1)
+		throws CertificateException 
+    {
+
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.net.ssl.X509TrustManager#getAcceptedIssuers()
+	 */
+	public X509Certificate[] getAcceptedIssuers() 
+    {
+		return null;
+	}
+
+}

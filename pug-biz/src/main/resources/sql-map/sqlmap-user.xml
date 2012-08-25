@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="user.dao">
+	
+	<!--
+      - ===============================================
+      - 配置缓存
+      - ===============================================
+    -->
+    
+	<cacheModel id="userCache" type="LRU">
+		<flushInterval hours="24"/>
+		<flushOnExecute statement="user.dao.insert"/>
+		<flushOnExecute statement="user.dao.update"/>
+		<flushOnExecute statement="user.dao.delete"/>
+		<property name="cache-size" value="1024"/>
+	</cacheModel>
+
+	<typeAlias alias="user" type="com.iacrqq.pug.domain.UserDO"/>
+	<!--
+      - ===============================================
+      - 配置结果映射
+      - ===============================================
+    -->
+	<resultMap id="userResultMap" class="user">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="sex" column="sex"/>
+		<result property="password" column="password"/>
+		<result property="email" column="email"/>
+		<result property="mobile" column="mobile"/>
+		<result property="birthday" column="birthday"/>
+		<result property="logo" column="logo"/>
+		<result property="grade" column="grade"/>
+		<result property="type" column="type"/>
+		<result property="fromWhere" column="from_where"/>
+		<result property="status" column="status"/>
+		<result property="isDeleted" column="is_deleted"/>
+		<result property="gmtCreate" column="gmt_create"/>
+		<result property="gmtModified" column="gmt_modified"/>
+	</resultMap>
+	
+	<!--
+      - ===============================================
+      - 创建一个user
+      - ===============================================
+    -->
+	<insert id="insert" parameterClass="user">
+		<![CDATA[
+	        INSERT INTO user (
+        		id,
+                name,
+                sex,
+                password,
+                email,
+                mobile,
+                birthday,
+                logo,
+                grade,
+                type,
+                status,
+                from_where,
+                is_deleted,
+                gmt_create,
+                gmt_modified
+	        ) VALUES (
+	        	null,
+	        	#name#,
+	        	#sex#,
+	        	#password#,
+	        	#email#,
+	        	#mobile#,
+	        	#birthday#,
+	        	#logo#,
+	        	#grade#,
+	        	#type#,
+	        	#status#,
+	        	#fromWhere#,
+	        	#isDeleted#,
+	        	now(),
+                now()
+	        )
+    	]]>
+    	<selectKey resultClass="long" keyProperty="id" >
+   			<![CDATA[
+   				SELECT @@IDENTITY AS id
+   			]]>
+   		</selectKey> 
+	</insert>
+	
+	<!--
+      - ===============================================
+      - 按id查询
+      - ===============================================
+    -->
+	<select id="get" parameterClass="long" resultMap="userResultMap" cacheModel="userCache">
+		<![CDATA[
+	        SELECT
+	        	id,
+                name,
+                sex,
+                password,
+                email,
+                mobile,
+                birthday,
+                logo,
+                grade,
+                type,
+                status,
+                from_where,
+                is_deleted,
+                gmt_create,
+                gmt_modified
+	        FROM user
+	        WHERE id = #value#
+    	]]>
+	</select>
+	
+	<!--
+      - ===============================================
+      - 按name查询
+      - ===============================================
+    -->
+	<select id="getByName" parameterClass="string" resultMap="userResultMap" cacheModel="userCache">
+		<![CDATA[
+	        SELECT
+	        	id,
+                name,
+                sex,
+                password,
+                email,
+                mobile,
+                birthday,
+                logo,
+                grade,
+                type,
+                status,
+                from_where,
+                is_deleted,
+                gmt_create,
+                gmt_modified
+	        FROM user
+	        WHERE name = #value#
+    	]]>
+	</select>
+	
+	<!--
+      - ===============================================
+      - 按email查询
+      - ===============================================
+    -->
+	<select id="getByEmail" parameterClass="string" resultMap="userResultMap" cacheModel="userCache">
+		<![CDATA[
+	        SELECT
+	        	id,
+                name,
+                sex,
+                password,
+                email,
+                mobile,
+                birthday,
+                logo,
+                grade,
+                type,
+                status,
+                from_where,
+                is_deleted,
+                gmt_create,
+                gmt_modified
+	        FROM user
+	        WHERE email = #value#
+    	]]>
+	</select>
+	
+	<!--
+      - ===============================================
+      - 更新user
+      - ===============================================
+    -->
+	<update id="update" parameterClass="user">
+		UPDATE user
+		SET
+			gmt_modified = now()
+		<dynamic>
+			<isNotNull prepend="," property="name">
+				name = #name:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="sex">
+				sex = #sex:TINYINT#
+            </isNotNull>
+            <isNotNull prepend="," property="password">
+				password = #password:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="email">
+				email = #email:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="mobile">
+				mobile = #mobile:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="birthday">
+				birthday = #birthday:DATE#      
+			</isNotNull>
+			<isNotNull prepend="," property="logo">
+				logo = #logo:VARCHAR#
+            </isNotNull>
+			<isNotNull prepend="," property="grade">
+				grade = #grade:INT#
+            </isNotNull>
+           	<isNotNull prepend="," property="type">
+				type = #type:INT#
+            </isNotNull>
+			<isNotNull prepend="," property="status">
+				status = #status:INT#      
+			</isNotNull>
+			<isNotNull prepend="," property="fromWhere">
+				from_where = #fromWhere:INT#      
+			</isNotNull>
+			<isNotNull prepend="," property="isDeleted">
+				is_deleted = #isDeleted:TINYINT#      
+			</isNotNull>
+		</dynamic>
+	    WHERE id = #id#
+	</update>
+	
+	<!--
+      - ===============================================
+      - 删除User
+      - ===============================================
+    -->
+	<delete id="delete" parameterClass="long">
+		<![CDATA[
+	        DELETE FROM user
+	        WHERE id = #value#
+    	]]>
+	</delete>
+</sqlMap>

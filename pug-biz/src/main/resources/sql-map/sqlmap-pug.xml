@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="pug.dao">
+	
+	<!--
+      - ===============================================
+      - 配置缓存
+      - ===============================================
+    -->
+    
+	<cacheModel id="pugCache" type="LRU">
+		<flushInterval hours="24"/>
+		<flushOnExecute statement="pug.dao.insert"/>
+		<flushOnExecute statement="pug.dao.update"/>
+		<flushOnExecute statement="pug.dao.delete"/>
+		<property name="cache-size" value="1024"/>
+	</cacheModel>
+
+	<typeAlias alias="pug" type="com.iacrqq.pug.domain.PugDO"/>
+	<typeAlias alias="queryModel" type="com.iacrqq.pug.model.PugQueryModel"/>
+	
+	<!--
+      - ===============================================
+      - 配置结果映射
+      - ===============================================
+    -->
+	<resultMap id="pugResultMap" class="pug">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="description" column="description"/>
+		<result property="owner.id" column="owner"/>
+		<result property="status" column="status"/>
+		<result property="type" column="type"/>
+		<result property="isDeleted" column="is_deleted"/>
+		<result property="gmtCreate" column="gmt_create"/>
+		<result property="gmtModified" column="gmt_modified"/>
+	</resultMap>
+	
+	<!--
+      - ===============================================
+      - 创建一个member
+      - ===============================================
+    -->
+	<insert id="insert" parameterClass="pug">
+		<![CDATA[
+	        INSERT INTO pug (
+        		id,
+                name,
+                description,
+                owner,
+                status,
+                type,
+                is_deleted,
+                gmt_create,
+                gmt_modified
+	        ) VALUES (
+	        	null,
+	        	#name#,
+	        	#description#,
+	        	#owner.id#,
+	        	#status#,
+	        	#type#,
+	        	#isDeleted#,
+	        	now(),
+                now()
+	        )
+    	]]>
+    	<selectKey resultClass="long" keyProperty="id" >
+   			<![CDATA[
+   				SELECT @@IDENTITY AS id
+   			]]>
+   		</selectKey> 
+	</insert>
+	
+	<!--
+      - ===============================================
+      - 按id查询
+      - ===============================================
+    -->
+	<select id="get" parameterClass="long" resultMap="pugResultMap" cacheModel="pugCache">
+		<![CDATA[
+	        SELECT
+	        	id,
+                name,
+                description,
+                owner,
+                status,
+                type,
+                is_deleted,
+                gmt_create,
+                gmt_modified
+	        FROM pug
+	        WHERE id = #value#
+    	]]>
+	</select>
+	
+	<select id="query" parameterClass="queryModel" resultMap="pugResultMap" cacheModel="pugCache">
+		<![CDATA[
+	        SELECT
+	        	id,
+                name,
+                description,
+                owner,
+                status,
+                type,
+                is_deleted,
+                gmt_create,
+                gmt_modified
+	        FROM pug
+    	]]>
+    	<dynamic prepend="WHERE">
+    		<isNotNull prepend="AND" property="owner">
+    			<![CDATA[
+					owner = #owner#
+				]]>
+            </isNotNull>
+            <isNotNull prepend="AND" property="type">
+    			<![CDATA[
+					type = #type#
+				]]>
+            </isNotNull>
+            <isNotNull prepend="AND" property="startTime">
+            	<![CDATA[
+					gmt_create >= #startTime#
+				]]>
+            </isNotNull>
+            <isNotNull prepend="AND" property="endTime">
+            	<![CDATA[
+					gmt_create <= #endTime#
+				]]>
+            </isNotNull>
+        </dynamic>
+	</select>
+	
+	<select id="count" parameterClass="queryModel" resultClass="long" cacheModel="pugCache">
+		<![CDATA[
+	        SELECT
+	        	COUNT(id)
+	        FROM pug
+    	]]>
+    	<dynamic prepend="WHERE">
+    		<isNotNull prepend="AND" property="owner">
+    			<![CDATA[
+					owner = #owner#
+				]]>
+            </isNotNull>
+            <isNotNull prepend="AND" property="type">
+    			<![CDATA[
+					type = #type#
+				]]>
+            </isNotNull>
+            <isNotNull prepend="AND" property="startTime">
+            	<![CDATA[
+					gmt_create >= #startTime#
+				]]>
+            </isNotNull>
+            <isNotNull prepend="AND" property="endTime">
+            	<![CDATA[
+					gmt_create <= #endTime#
+				]]>
+            </isNotNull>
+        </dynamic>
+	</select>
+	
+	<!--
+      - ===============================================
+      - 更新member
+      - ===============================================
+    -->
+	<update id="update" parameterClass="pug">
+		UPDATE pug
+		SET
+			gmt_modified = now()
+		<dynamic>
+			<isNotNull prepend="," property="name">
+				name = #name:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="description">
+				description = #description:VARCHAR#
+            </isNotNull>
+           	<isNotNull prepend="," property="type">
+				type = #type:INT#
+            </isNotNull>
+			<isNotNull prepend="," property="status">
+				status = #status:INT#      
+			</isNotNull>
+			<isNotNull prepend="," property="owner.id">
+				owner = #owner.id:INT#
+            </isNotNull>
+			<isNotNull prepend="," property="isDeleted">
+				is_deleted = #isDeleted:TINYINT#      
+			</isNotNull>
+		</dynamic>
+	    WHERE id = #id#
+	</update>
+	
+	<!--
+      - ===============================================
+      - 删除User
+      - ===============================================
+    -->
+	<delete id="delete" parameterClass="long">
+		<![CDATA[
+	        DELETE FROM pug
+	        WHERE id = #value#
+    	]]>
+	</delete>
+</sqlMap>

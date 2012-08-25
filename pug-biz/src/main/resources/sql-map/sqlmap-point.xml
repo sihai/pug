@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="point.dao">
+	
+	<!--
+      - ===============================================
+      - 配置缓存
+      - ===============================================
+    -->
+    
+	<cacheModel id="pointCache" type="LRU">
+		<flushInterval hours="24"/>
+		<flushOnExecute statement="point.dao.insert"/>
+		<flushOnExecute statement="point.dao.update"/>
+		<flushOnExecute statement="point.dao.delete"/>
+		<property name="cache-size" value="1024"/>
+	</cacheModel>
+
+	<typeAlias alias="point" type="com.iacrqq.pug.domain.PointDO"/>
+	
+	<!--
+      - ===============================================
+      - 配置结果映射
+      - ===============================================
+    -->
+	<resultMap id="pointResultMap" class="point">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="description" column="description"/>
+		<result property="longitude" column="longitude"/>
+		<result property="latitude" column="latitude"/>
+		<result property="pug.id" column="pug"/>
+		<result property="isDeleted" column="is_deleted"/>
+		<result property="gmtCreate" column="gmt_create"/>
+		<result property="gmtModified" column="gmt_modified"/>
+	</resultMap>
+	
+	<!--
+      - ===============================================
+      - 创建一个point
+      - ===============================================
+    -->
+	<insert id="insert" parameterClass="point">
+		<![CDATA[
+	        INSERT INTO point (
+        		id,
+                name,
+                description,
+                longitude,
+                latitude,
+                pug,
+                is_deleted,
+                gmt_create,
+                gmt_modified
+	        ) VALUES (
+	        	null,
+	        	#name#,
+	        	#description#,
+	        	#longitude#,
+	        	#latitude#,
+	        	#pug.id#,
+	        	#isDeleted#,
+	        	now(),
+                now()
+	        )
+    	]]>
+    	<selectKey resultClass="long" keyProperty="id" >
+   			<![CDATA[
+   				SELECT @@IDENTITY AS id
+   			]]>
+   		</selectKey> 
+	</insert>
+	
+	<!--
+      - ===============================================
+      - 按id查询
+      - ===============================================
+    -->
+	<select id="getAll" parameterClass="long" resultMap="pointResultMap" cacheModel="pointCache">
+		<![CDATA[
+	        SELECT
+	        	id,
+                name,
+                description,
+                longitude,
+                latitude,
+                pug,
+                is_deleted,
+                gmt_create,
+                gmt_modified
+	        FROM point
+	        WHERE pug = #value#
+    	]]>
+	</select>
+
+	<!--
+      - ===============================================
+      - 更新point
+      - ===============================================
+    -->
+	<update id="update" parameterClass="point">
+		UPDATE point
+		SET
+			gmt_modified = now()
+		<dynamic>
+			<isNotNull prepend="," property="name">
+				name = #name:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="description">
+				description = #description:VARCHAR#
+            </isNotNull>
+           	<isNotNull prepend="," property="longitude">
+				longitude = #longitude:DOUBLE#
+            </isNotNull>
+			<isNotNull prepend="," property="latitude">
+				latitude = #latitude:DOUBLE#      
+			</isNotNull>
+			<isNotNull prepend="," property="pug.id">
+				pug = #pug.id:INT#
+            </isNotNull>
+			<isNotNull prepend="," property="isDeleted">
+				is_deleted = #isDeleted:TINYINT#      
+			</isNotNull>
+		</dynamic>
+	    WHERE id = #id#
+	</update>
+	
+	<!--
+      - ===============================================
+      - 删除point
+      - ===============================================
+    -->
+	<delete id="delete" parameterClass="long">
+		<![CDATA[
+	        DELETE FROM point
+	        WHERE id = #value#
+    	]]>
+	</delete>
+</sqlMap>
