@@ -93,8 +93,8 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
-		<filters>
+		<!-- <filters>
 			<filter>${user.home}/build.properties</filter>
-		</filters>
+		</filters> -->
   </build>
 </project> 

@@ -54,11 +54,11 @@
 				<artifactId>pug-biz</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<dependency>
+			<!-- <dependency>
 				<groupId>com.iacrqq</groupId>
 				<artifactId>util</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
+			</dependency> -->
 			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>

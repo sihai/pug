@@ -16,30 +16,40 @@ import com.iacrqq.pug.domain.PugDO;
 import com.iacrqq.pug.domain.UserDO;
 import com.iacrqq.pug.exception.ValidateException;
 import com.iacrqq.pug.manager.PugManager;
+import com.iacrqq.pug.manager.UserManager;
 import com.iacrqq.pug.model.JSONResultModel;
-import com.iacrqq.pug.web.controller.AbstractLoginedController;
+import com.iacrqq.pug.web.controller.AbstractController;
 
-public class PugAction extends AbstractLoginedController {
+public class MobilePugAction extends AbstractController {
 
 	private static final String CREATE_PUG = "_create_pug_";
 	private static final String ADD_POINT = "_add_point_";
 	
 	@Autowired
 	private PugManager pugManager;
-	
+	@Autowired
+	private UserManager userManager;
+
 	@Override
-	protected ModelAndView handleLogined(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	protected ModelAndView handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		String operation = request.getParameter(OPERATION_KEY);
+		
 		JSONResultModel jsonResult = null;
 		
-		if(StringUtils.equals(operation, CREATE_PUG)) {
-			jsonResult = doCreatePug(request, response);
-		} else if(StringUtils.equals(operation, ADD_POINT)) {
-			jsonResult = doAddPoint(request, response);
-		} else {
-			// ERROR
-			jsonResult = new JSONResultModel(false, "Unknown operation", null);
+		try {
+			//
+			UserDO user = validate(request, response);
+			String operation = request.getParameter(OPERATION_KEY);
+			
+			if(StringUtils.equals(operation, CREATE_PUG)) {
+				jsonResult = doCreatePug(request, response, user);
+			} else if(StringUtils.equals(operation, ADD_POINT)) {
+				jsonResult = doAddPoint(request, response, user);
+			} else {
+				throw new ValidateException("Unknown operation");
+			}
+		} catch (ValidateException e) {
+			jsonResult = new JSONResultModel(false, e.getMessage(), null);
 		}
 		
 		Writer writer = null;
@@ -57,11 +67,9 @@ public class PugAction extends AbstractLoginedController {
 	}
 
 	private JSONResultModel doCreatePug(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response, UserDO user) {
 		
 		JSONResultModel jsonResult = new JSONResultModel(true, null, null);
-		UserDO user = new UserDO();
-		user.setId(getUserId(request.getSession()));
 		PugDO pug = new PugDO();
 		pug.setName(request.getParameter("name"));
 		pug.setOwner(user);
@@ -92,7 +100,7 @@ public class PugAction extends AbstractLoginedController {
 	}
 	
 	private JSONResultModel doAddPoint(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response, UserDO user) {
 		
 		JSONResultModel jsonResult = new JSONResultModel(true, null, null);
 		
@@ -117,7 +125,30 @@ public class PugAction extends AbstractLoginedController {
 		return jsonResult;
 	}
 	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 */
+	private UserDO validate(HttpServletRequest request,
+			HttpServletResponse response) throws ValidateException {
+		validatePugKey(request, response);
+		UserDO user = userManager.login(request.getParameter("_user_name_"), request.getParameter("_password_"));
+		if(null == user) {
+			throw new ValidateException("You maybe not use pugapp, or config pugapp correct.");
+		}
+		return user;
+	}
+	
 	public void setPugManager(PugManager pugManager) {
 		this.pugManager = pugManager;
+	}
+	
+	public void setUserManager(UserManager userManager) {
+		this.userManager = userManager;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println();
 	}
 }

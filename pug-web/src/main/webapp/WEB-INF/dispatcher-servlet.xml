@@ -73,6 +73,7 @@
 				<prop key="/qqcallback.jhtml">qqCallback</prop>
 				<prop key="/myfoot.jhtml">myFoot</prop>
 				<prop key="/pugaction.jhtml">pugAction</prop>
+				<prop key="/mpugaction.jhtml">mPugAction</prop>
 				<prop key="/pugquery.jhtml">pugQuery</prop>
 				<prop key="/memberaction.jhtml">memberAction</prop>
 			</props>
@@ -98,9 +99,12 @@
 		<property name="pugManager" ref="pugManager" />
 	</bean>
 	
-	<bean id="pugAction" class="com.iacrqq.pug.web.action.PugAction">
+	<bean id="mPugAction" class="com.iacrqq.pug.web.action.MobilePugAction">
 		<property name="pugManager" ref="pugManager" />
+		<property name="userManager" ref="userManager" />
 	</bean>
+	
+	
 	
 	<bean id="memberAction" class="com.iacrqq.pug.web.action.MemberAction">
 		<property name="userManager" ref="userManager" />
