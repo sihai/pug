@@ -11,12 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
 import com.iacrqq.pug.exception.ValidateException;
 import com.iacrqq.pug.web.LoginContext;
+import com.iacrqq.util.PasswordUtil;
+import com.iacrqq.util.StringUtil;
 
 /**
  * Controller抽象基类，请继承本类
@@ -45,7 +46,7 @@ public abstract class AbstractController implements Controller {
 	protected static final String UPLOAD_FILE_HOLDER_KEY = "_upload_file_holder_";
 	
 	protected static final String PARAMETER_PUG_KEY = "_pug_key_";
-	protected static final String PUG_KEY = "";
+	protected static final String PUG_KEY = "XxEf-uu!QNs^!ViBx\\BQ^JdKXEhO%=p#CjI!ZRg*BReCbt^nXne*s-kFBTvCcIn@%aCjX^LXT#)mTCaBK!fSd!h*E\\Lr^QbteNQj-j^MO)IFFbS_rrX#*B^!sawBslgi";
 
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request,
@@ -69,7 +70,7 @@ public abstract class AbstractController implements Controller {
 			context.put("loginContext", request.getSession().getAttribute(LOGIN_CONTEXT));
 
 			String queryString = request.getQueryString();
-			queryString = StringUtils.isBlank(queryString) ? "" : "?" + queryString;
+			queryString = StringUtil.isBlank(queryString) ? "" : "?" + queryString;
 			context.put(CURRENT_URL, new StringBuilder(URLEncoder.encode(request.getRequestURL()
 							.toString(), "utf-8")).append(URLEncoder.encode(
 							queryString, "utf-8").toString()));
@@ -110,11 +111,10 @@ public abstract class AbstractController implements Controller {
 	protected void validatePugKey(HttpServletRequest request,
 			HttpServletResponse response) throws ValidateException {
 		String pugKey = request.getParameter(PARAMETER_PUG_KEY);
-		if(StringUtils.isBlank(pugKey)) {
+		if(StringUtil.isBlank(pugKey)) {
 			throw new ValidateException(String.format("Miss parameter %s", PARAMETER_PUG_KEY));
 		}
-		// FIXME use PasswordUtil
-		if(!StringUtils.equals(pugKey, PUG_KEY)) {
+		if(PasswordUtil.equals(PUG_KEY, pugKey)) {
 			throw new ValidateException(String.format("Wrong value of parameter %s", PARAMETER_PUG_KEY));
 		}
 	}

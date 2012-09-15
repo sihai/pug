@@ -6,6 +6,8 @@ package com.iacrqq.pug.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.iacrqq.util.PasswordUtil;
+
 /**
  * 
  * @author sihai
@@ -53,5 +55,11 @@ public class BaseDO implements Serializable {
 
 	public void setGmtModified(Date gmtModified) {
 		this.gmtModified = gmtModified;
+	}
+	
+	public static void main(String[] args) {
+		String passowrd = PasswordUtil.generatePassowrd(128);
+		System.out.println(passowrd);
+		System.out.println(PasswordUtil.encrypt(passowrd));
 	}
 }

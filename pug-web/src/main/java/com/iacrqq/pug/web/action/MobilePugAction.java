@@ -147,8 +147,4 @@ public class MobilePugAction extends AbstractController {
 	public void setUserManager(UserManager userManager) {
 		this.userManager = userManager;
 	}
-	
-	public static void main(String[] args) {
-		System.out.println();
-	}
 }
