@@ -79,6 +79,13 @@ public class UserManagerImpl implements UserManager {
 	}
 	
 	@Override
+	public UserDO syncUserFromTaobao(String nick) {
+		UserDO user = new UserDO();
+		user.setName(nick);
+		return user;
+	}
+
+	@Override
 	public void register(UserDO user) throws ValidateException {
 		validate(user);
 		UserDO tmp = get(user.getName());

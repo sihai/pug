@@ -66,6 +66,13 @@ public interface UserManager {
 	
 	/**
 	 * 
+	 * @param nick
+	 * @return
+	 */
+	UserDO syncUserFromTaobao(String nick);
+	
+	/**
+	 * 
 	 * @param user
 	 * @throws ValidateException
 	 */
