@@ -42,6 +42,7 @@
 		</property>
 		<property name="contentType" value="text/html;charset=UTF-8" />
 		<property name="exposeRequestAttributes" value="true" />
+		<property name="requestContextAttribute" value="requestContext" />
 		<property name="exposeSessionAttributes">
 	        <value>true</value>
 	    </property>

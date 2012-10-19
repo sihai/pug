@@ -58,6 +58,11 @@
 		    <artifactId>json-lib</artifactId>
 		    <classifier>jdk15</classifier> 
 		</dependency>
+		
+		<dependency>
+			<groupId>com.ihome</groupId>
+			<artifactId>soc</artifactId>
+		</dependency>
 	</dependencies>
   
 	<build>

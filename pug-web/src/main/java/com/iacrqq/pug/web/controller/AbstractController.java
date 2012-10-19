@@ -84,12 +84,12 @@ public abstract class AbstractController implements Controller {
 			HttpServletResponse response) throws Exception;
 
 	protected boolean isLogined(HttpSession session) {
-		LoginContext loginContext = (LoginContext) session.getAttribute(LOGIN_CONTEXT);
-		if (loginContext == null) {
+		String userId = (String) session.getAttribute("userId");
+		if (userId == null) {
 			return false;
 		}
 
-		return loginContext.getIsLogin();
+		return true;
 	}
 
 	protected Long getUserId(HttpSession session) {

@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,13 +22,12 @@ import sun.misc.BASE64Decoder;
 
 import com.iacrqq.pug.domain.UserDO;
 import com.iacrqq.pug.manager.UserManager;
-import com.iacrqq.pug.qq.api.QQGetUserInfo;
-import com.iacrqq.pug.qq.api.domain.QQUserInfo;
 import com.iacrqq.pug.web.LoginContext;
 import com.iacrqq.util.StringUtil;
 
 /**
  * 
+ * TOP 入口
  * 
  * @author sihai
  *
@@ -73,13 +73,19 @@ public class TopCallback extends AbstractController {
         Long vistorId = Long.valueOf(parametersMap.get(VISITOR_ID));
         String vistorNick = parametersMap.get(VISITOR_NICK);
 
-		mv = new ModelAndView("redirct:/myfoot.jhtml");
+		mv = new ModelAndView("redirect:/myfoot.jhtml");
 		Map<String, Object> context = mv.getModel();
 		UserDO user = userManager.syncUserFromTaobao(vistorNick);
 		context.put("user", user);
 		HttpSession session = request.getSession(true);
+		session.setAttribute("userId", "0");
+		session.setAttribute("userName", "sihai");
+		session.setAttribute("userLogo", "http://www.google.com");
 		session.setAttribute(LOGIN_CONTEXT, LoginContext.fromUser(user));
-		
+		Cookie cookie = new Cookie("test", "value");
+		cookie.setPath("/");
+		cookie.setMaxAge(1800);
+		response.addCookie(cookie);
 		return mv;
 	}
 	
